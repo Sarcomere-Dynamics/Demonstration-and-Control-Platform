@@ -318,7 +318,7 @@ class DSDisplay:
         except Exception as e:
             print(f"[DSDisplay] show_image error: {e}")
 
-    # <<<< Primitive drawing (exposed for custom screens) >>>>
+    # <<<< Primitive drawing (exposed to DSManager for custom screens) >>>>
 
     def draw_rect(self, x, y, w, h, *, outline=COL_BORDER, fill=None):
         if self._draw:
@@ -350,10 +350,11 @@ class DSDisplay:
         """Manually push the current framebuffer to the LCD."""
         self._push_framebuffer()
 
-    # ------------------------------------------------------------------ #
-    #  Internal rendering                                                 #
-    # ------------------------------------------------------------------ #
-
+#
+#       Internal Rendering
+#       - Everything below here is related to drawing the screen and building the main runtime menu.
+#       - Each object on the screen is built up by some function, which is then rolled up _compose_frame 
+#
     def _render_loop(self):
         """Background thread: redraw the screen at the target FPS."""
         interval = 1.0 / self._fps
@@ -366,6 +367,7 @@ class DSDisplay:
             self._compose_frame(snap)
             self._push_framebuffer()
             time.sleep(interval)
+
 
     def _snapshot(self) -> dict:
         """Take a lightweight copy of state for rendering (must hold lock)."""
@@ -380,8 +382,8 @@ class DSDisplay:
             "screen_idx": s.menu_index,
         }
 
-    def _compose_frame(self, snap: dict):
-        """Draw the entire UI frame into the PIL framebuffer."""
+    def _compose_runtime_frame(self, snap: dict):
+        """Draw the entire UI frame for runtime grasp and mode selection into the PIL framebuffer."""
         if not _HAS_PIL:
             return
 
@@ -400,25 +402,25 @@ class DSDisplay:
                 self._draw_temperature(d, snap["temp_c"])
                 return
 
-        # ---- Control-mode column (left side) ----
+        # Control-mode column (left side) 
         self._draw_mode_indicators(d, snap["mode"])
 
-        # ---- Centre menu area ----
+        # Centre menu area 
         self._draw_grasp_carousel(d, snap)
 
-        # ---- Menu screen name (bottom-left) ----
+        # Menu screen name (bottom-left) 
         if screens:
             screen_name = screens[snap["screen_idx"]].name
             d.text((MENU_AREA_X, 1), screen_name,
                    fill=COL_DIM_TEXT, font=self._font_sm)
 
-        # ---- Battery (top-right) ----
+        # Battery (top-right)
         self._draw_battery(d, snap["battery_v"])
 
-        # ---- Temperature (bottom-right) ----
+        # Temperature (bottom-right)
         self._draw_temperature(d, snap["temp_c"])
 
-    # ---- Sub-renderers ----
+    # <<<< Sub-renderers >>>>
 
     def _draw_mode_indicators(self, d: "ImageDraw.Draw", mode: ControlMode):
         """Draw POS / VEL / FOR indicators on the left column."""
@@ -511,7 +513,7 @@ class DSDisplay:
         d.text((TEMP_X, TEMP_Y + 10), label, fill=COL_TEXT,
                font=self._font_md)
 
-    # ---- Helpers ----
+    # <<<< Helpers >>>>
 
     @staticmethod
     def _voltage_to_percent(v: float) -> int:
@@ -593,7 +595,7 @@ class DSDisplay:
 #     # Render one frame manually
 #     with display._lock:
 #         snap = display._snapshot()
-#     display._compose_frame(snap)
+#     display._compose_runtime_frame(snap)
 
 #     output_path = "/home/claude/ds_display_preview.png"
 #     display._fb.save(output_path)
