@@ -149,7 +149,7 @@ class DSDisplay:
         display.stop()
     """
 
-    def __init__(self, *, use_hardware: bool = True, fps: int = 10):
+    def __init__(self, cs_pin, dc_pin, rst_pin, backlight_pin, use_hardware: bool = True, fps: int = 10):
         self._state = DisplayState()
         self._lock = threading.Lock()
         self._fps = fps
@@ -163,10 +163,10 @@ class DSDisplay:
             try:
                 self._hw = ST7735.ST7735(
                     port=0,
-                    cs=8,              # GPIO8
-                    dc=25,             # GPIO25
-                    rst=27,            # GPIO27
-                    backlight=24,      # GPIO24
+                    cs=cs_pin,                  # GPIO8
+                    dc=dc_pin,                  # GPIO25
+                    rst=rst_pin,                # GPIO27
+                    backlight=backlight_pin,    # GPIO24
                     width=SCREEN_WIDTH,
                     height=SCREEN_HEIGHT,
                     rotation=0,

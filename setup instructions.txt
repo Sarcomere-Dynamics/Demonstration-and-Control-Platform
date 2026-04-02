@@ -1,0 +1,13 @@
+### Install required dependencies for the screen 
+
+sudo apt install python3-pip
+sudo apt install python3-pil
+sudo apt install python3-dev
+sudo apt install python3-numpy
+sudo apt install python3-libgpiod
+sudo pip install st7735 gpiod gpiodevice --break-system-packages
+
+### Set the screen to the correct dimensions, 128x128
+
+sudo nano /usr/local/lib/python3.13/dist-packages/st7735/__init__.py
+
