@@ -50,7 +50,7 @@ def setup_display():
 # Runtime Funciton
 def demo_stick():
     # Setup each device here 
-    display = DSDisplay(use_hardware=True,cs_pin=GPIO_DISPLAY_CS, dc_pin=GPIO_DISPLAY_DC, rst_pin=GPIO_DISPLAY_RST, backlight_pin=GPIO_DISPLAY_BACKLIGHT)
+    display = DSDisplay.DSDisplay(use_hardware=True,cs_pin=GPIO_DISPLAY_CS, dc_pin=GPIO_DISPLAY_DC, rst_pin=GPIO_DISPLAY_RST, backlight_pin=GPIO_DISPLAY_BACKLIGHT)
 
     display.set_grasp_list(["Idle", "Power", "Pinch", "Tripod", "Lateral", "Hook"])
     display.set_battery_voltage(3.73)      # ~69 %
