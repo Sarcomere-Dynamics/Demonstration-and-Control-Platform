@@ -356,7 +356,7 @@ class DSDisplay:
                     break
                 snap = self._snapshot()
 
-            self._compose_frame(snap)
+            self._compose_runtime_frame(snap)
             self._push_framebuffer()
             time.sleep(interval)
 
