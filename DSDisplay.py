@@ -1,5 +1,3 @@
-# CLAUDE STUFF
-
 """
 Drives an ST7735S 128x128 LCD over SPI and provides:
   - Image rendering (PNG files scaled to 128x128)
