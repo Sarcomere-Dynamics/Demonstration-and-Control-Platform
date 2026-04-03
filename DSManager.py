@@ -61,10 +61,10 @@ def demo_stick():
 
     # Runtime loop statemachine based on button inpuits
 
-    # while True:
+    while True:
     #     with display._lock:
-    snap = display._snapshot()
-    display._compose_runtime_frame(snap)
+        snap = display._snapshot()
+        display._compose_runtime_frame(snap)
     
 
 if __name__ == '__main__':

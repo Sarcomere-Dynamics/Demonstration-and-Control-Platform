@@ -292,12 +292,6 @@ class DSDisplay:
         with self._lock:
             self._state.menu_screens.append(screen)
 
-    # not really needed
-    # def insert_menu_screen(self, index: int, screen: MenuScreen):
-    #     """Insert a MenuScreen at a specific position."""
-    #     with self._lock:
-    #         self._state.menu_screens.insert(index, screen)
-
     # <<<< Image display >>>>
 
     def show_image(self, path: str):
